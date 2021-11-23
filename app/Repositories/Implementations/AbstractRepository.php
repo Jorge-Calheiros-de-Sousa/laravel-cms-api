@@ -11,7 +11,7 @@ abstract class AbstractRepository
 
     public function __construct()
     {
-        $this->model->resolveModel();
+        $this->model = $this->resolveModel();
     }
 
     /**

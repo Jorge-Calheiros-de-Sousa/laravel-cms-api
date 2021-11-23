@@ -22,20 +22,20 @@ class PostRepository extends AbstractRepository implements PostRepositoryContrac
             return $posts;
         }
 
-        /*$mainQuery = $this->model->with(["users", "categories"])->when($titleSearch, function ($query) use ($titleSearch, $field) {
+        $mainQuery = $this->model->with(["user", "categories"])->when($titleSearch, function ($query) use ($titleSearch, $field) {
             $query->where($field, "like", "%$titleSearch%");
         })
             ->when($cat, function ($query) use ($cat) {
                 $query->whereHas("categories", function ($query) use ($cat) {
                     $query->where("categories.slug", $cat);
                 });
-            });*/
+            });
 
-        $mainQuery = $this->model->with("users")->when($titleSearch, function ($query) use ($titleSearch, $field) {
+        /*$mainQuery = $this->model->with("users")->when($titleSearch, function ($query) use ($titleSearch, $field) {
             $query->where($field, "like", "%$titleSearch%");
-        });
+        });*/
 
-        $poist = $mainQuery->paginte($perPage);
+        $posts = $mainQuery->paginate($perPage);
 
         if (!$avoidCache) {
             Cache::tags(["posts"])->put("post:$page", $posts);
