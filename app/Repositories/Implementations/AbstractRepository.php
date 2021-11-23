@@ -5,7 +5,7 @@ namespace App\Repositories\Implementations;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
-abstract class AbstractRepostory
+abstract class AbstractRepository
 {
     protected $model;
 
