@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\User\UserStore;
 use App\Http\Requests\User\UserUpdate;
 use App\Repositories\Contracts\UserRepositoryContract;
 use Exception;
@@ -15,6 +16,7 @@ class UserController extends Controller
     {
         $this->repository = $repository;
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -27,6 +29,7 @@ class UserController extends Controller
 
         return response()->json(compact("users"));
     }
+
     /**
      * Display the specified resource.
      *
@@ -40,6 +43,24 @@ class UserController extends Controller
 
         return response()->json(compact("user", "url"));
     }
+
+    /**
+     * Store users
+     */
+    public function store(UserStore $request)
+    {
+        try {
+            $data = $request->except("_token");
+
+            if (!$user = $this->repository->create($data)) {
+                throw new Exception($user);
+            }
+            return response()->json(compact("user"));
+        } catch (\Throwable $th) {
+            return $this->redirectWithErrors($th, __("user.error.create"));
+        }
+    }
+
     /**
      * Update the specified resource in storage.
      *
