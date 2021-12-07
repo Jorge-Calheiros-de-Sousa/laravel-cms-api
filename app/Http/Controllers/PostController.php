@@ -54,9 +54,6 @@ class PostController extends Controller
                 throw new Exception($post);
             }
 
-            return redirect(route("posts.index"))->with([
-                "success-message" => __("post.success.store")
-            ]);
 
             return response()->json(compact("post"), 202);
         } catch (\Throwable $th) {
