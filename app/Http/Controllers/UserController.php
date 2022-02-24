@@ -16,6 +16,7 @@ class UserController extends Controller
     {
         $this->repository = $repository;
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -28,6 +29,7 @@ class UserController extends Controller
 
         return response()->json(compact("users"));
     }
+
     /**
      * Display the specified resource.
      *
@@ -41,7 +43,10 @@ class UserController extends Controller
 
         return response()->json(compact("user", "url"));
     }
-
+    
+    /*
+      Store user
+    */
     public function store(UserStore $request)
     {
         $data = $request->getUserData();
