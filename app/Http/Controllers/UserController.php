@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\User\UserStore;
 use App\Http\Requests\User\UserUpdate;
 use App\Repositories\Contracts\UserRepositoryContract;
 use Exception;
@@ -39,6 +40,20 @@ class UserController extends Controller
         $url = env("APP_URL");
 
         return response()->json(compact("user", "url"));
+    }
+
+    public function store(UserStore $request)
+    {
+        $data = $request->getUserData();
+
+        try {
+            if (!$created = $this->repository->create($data)) {
+                throw new Exception($created);
+            }
+            return response()->json(compact("created"));
+        } catch (\Throwable $th) {
+            return  $this->redirectWithErrors($th, __("user.error.create"));
+        }
     }
     /**
      * Update the specified resource in storage.

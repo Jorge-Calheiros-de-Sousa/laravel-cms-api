@@ -19,9 +19,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    Route::apiResource("/users", UserController::class);
+    Route::apiResource("/users", UserController::class)->except("store");
 
     Route::apiResource("/posts", PostController::class);
 });
-
+Route::post("/users", [UserController::class, "store"]);
 Route::post("/login", [AuthController::class, "authenticate"]);

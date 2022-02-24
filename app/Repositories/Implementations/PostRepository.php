@@ -31,15 +31,17 @@ class PostRepository extends AbstractRepository implements PostRepositoryContrac
                 });
             });
 
-        /*$mainQuery = $this->model->with("users")->when($titleSearch, function ($query) use ($titleSearch, $field) {
-            $query->where($field, "like", "%$titleSearch%");
-        });*/
-
         $posts = $mainQuery->paginate($perPage);
 
         if (!$avoidCache) {
             Cache::tags(["posts"])->put("post:$page", $posts);
         }
         return $posts;
+    }
+    public function findOrFail(int $id)
+    {
+        $mainQuery = $this->model->with(["user", "categories"]);
+        $post = $mainQuery->findOrFail($id);
+        return $post;
     }
 }
