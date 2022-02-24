@@ -43,24 +43,23 @@ class UserController extends Controller
 
         return response()->json(compact("user", "url"));
     }
-
-    /**
-     * Store users
-     */
+    
+    /*
+      Store user
+    */
     public function store(UserStore $request)
     {
-        try {
-            $data = $request->except("_token");
+        $data = $request->getUserData();
 
-            if (!$user = $this->repository->create($data)) {
-                throw new Exception($user);
+        try {
+            if (!$created = $this->repository->create($data)) {
+                throw new Exception($created);
             }
-            return response()->json(compact("user"));
+            return response()->json(compact("created"));
         } catch (\Throwable $th) {
-            return $this->redirectWithErrors($th, __("user.error.create"));
+            return  $this->redirectWithErrors($th, __("user.error.create"));
         }
     }
-
     /**
      * Update the specified resource in storage.
      *
